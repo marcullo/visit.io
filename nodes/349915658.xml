@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.7.5 (23445 thorn-02.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="349915658" visible="true" version="5" changeset="32875771" timestamp="2015-07-25T17:44:18Z" user="kocio" uid="52087" lat="52.2276895" lon="21.0235775">
+  <tag k="historic" v="memorial"/>
+  <tag k="memorial" v="statue"/>
+  <tag k="name" v="Pomnik Wincentego Witosa"/>
+ </node>
+</osm>

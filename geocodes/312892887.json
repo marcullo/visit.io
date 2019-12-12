@@ -1,0 +1,88 @@
+{
+  "geocoding": {
+    "version": "0.2",
+    "attribution": "http://192.168.2.20:3100/attribution",
+    "query": {
+      "text": "Secado",
+      "size": 1,
+      "sources": [
+        "openstreetmap"
+      ],
+      "layers": [
+        "venue",
+        "street"
+      ],
+      "private": false,
+      "boundary.rect.min_lat": 52.105971,
+      "boundary.rect.max_lat": 52.3599127438,
+      "boundary.rect.min_lon": 20.7348167419,
+      "boundary.rect.max_lon": 21.2449415,
+      "boundary.country": [
+        "POL"
+      ],
+      "lang": {
+        "name": "English",
+        "iso6391": "en",
+        "iso6393": "eng",
+        "defaulted": true
+      },
+      "querySize": 20,
+      "parser": "pelias",
+      "parsed_text": {
+        "subject": "Secado"
+      }
+    },
+    "warnings": [
+      "performance optimization: excluding 'address' layer"
+    ],
+    "engine": {
+      "name": "Pelias",
+      "author": "Mapzen",
+      "version": "1.0"
+    },
+    "timestamp": 1578595205747
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.015252,
+          52.224897
+        ]
+      },
+      "properties": {
+        "id": "node/312892887",
+        "gid": "openstreetmap:venue:node/312892887",
+        "layer": "venue",
+        "source": "openstreetmap",
+        "source_id": "node/312892887",
+        "name": "Secado",
+        "confidence": 1,
+        "match_type": "exact",
+        "accuracy": "point",
+        "country": "Poland",
+        "country_gid": "whosonfirst:country:85633723",
+        "country_a": "POL",
+        "region": "Mazowieckie",
+        "region_gid": "whosonfirst:region:85687257",
+        "region_a": "MZ",
+        "locality": "Warsaw",
+        "locality_gid": "whosonfirst:locality:101752777",
+        "neighbourhood": "Ujazdow",
+        "neighbourhood_gid": "whosonfirst:neighbourhood:85906679",
+        "continent": "Europe",
+        "continent_gid": "whosonfirst:continent:102191581",
+        "label": "Secado, Warsaw, Poland"
+      }
+    }
+  ],
+  "bbox": [
+    21.015252,
+    52.224897,
+    21.015252,
+    52.224897
+  ]
+}

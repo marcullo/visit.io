@@ -1,0 +1,105 @@
+{
+  "geocoding": {
+    "version": "0.2",
+    "attribution": "http://192.168.2.20:3100/attribution",
+    "query": {
+      "text": "Wrocław",
+      "size": 1,
+      "layers": [
+        "venue",
+        "street",
+        "country",
+        "macroregion",
+        "region",
+        "county",
+        "localadmin",
+        "locality",
+        "borough",
+        "neighbourhood",
+        "continent",
+        "empire",
+        "dependency",
+        "macrocounty",
+        "macrohood",
+        "microhood",
+        "disputed",
+        "postalcode",
+        "ocean",
+        "marinearea"
+      ],
+      "private": false,
+      "boundary.country": [
+        "POL"
+      ],
+      "lang": {
+        "name": "English",
+        "iso6391": "en",
+        "iso6393": "eng",
+        "defaulted": true
+      },
+      "querySize": 20,
+      "parser": "libpostal",
+      "parsed_text": {
+        "city": "wrocław"
+      }
+    },
+    "warnings": [
+      "performance optimization: excluding 'address' layer"
+    ],
+    "engine": {
+      "name": "Pelias",
+      "author": "Mapzen",
+      "version": "1.0"
+    },
+    "timestamp": 1578588069724
+  },
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.023978,
+          51.097349
+        ]
+      },
+      "properties": {
+        "id": "101752181",
+        "gid": "whosonfirst:locality:101752181",
+        "layer": "locality",
+        "source": "whosonfirst",
+        "source_id": "101752181",
+        "name": "Wrocław",
+        "confidence": 1,
+        "match_type": "exact",
+        "accuracy": "centroid",
+        "country": "Poland",
+        "country_gid": "whosonfirst:country:85633723",
+        "country_a": "POL",
+        "region": "dolnoslaskie",
+        "region_gid": "whosonfirst:region:85687301",
+        "region_a": "DS",
+        "county": "M. WrocÅaw",
+        "county_gid": "whosonfirst:county:102079661",
+        "locality": "Wrocław",
+        "locality_gid": "whosonfirst:locality:101752181",
+        "continent": "Europe",
+        "continent_gid": "whosonfirst:continent:102191581",
+        "label": "Wrocław, Poland"
+      },
+      "bbox": [
+        16.844077,
+        51.0381465722,
+        17.1654155,
+        51.203595
+      ]
+    }
+  ],
+  "bbox": [
+    16.844077,
+    51.0381465722,
+    17.1654155,
+    51.203595
+  ]
+}

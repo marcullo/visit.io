@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.7.5 (13736 thorn-02.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="316886479" visible="true" version="6" changeset="42425013" timestamp="2016-09-25T15:07:02Z" user="Anton Sh" uid="4629140" lat="52.2212657" lon="21.0160660">
+  <tag k="addr:city" v="Warszawa"/>
+  <tag k="addr:housenumber" v="1"/>
+  <tag k="addr:street" v="Plac Konstytucji"/>
+  <tag k="amenity" v="restaurant"/>
+  <tag k="cuisine" v="czech;polish"/>
+  <tag k="name" v="U Szwejka"/>
+  <tag k="name:pl" v="U Szwejka"/>
+  <tag k="opening_hours" v="Mo-Fr 08:00-00:00; Sa 10:00-00:00; Su 13:00-00:00"/>
+  <tag k="website" v="http://www.uszwejka.pl"/>
+ </node>
+</osm>

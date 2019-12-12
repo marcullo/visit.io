@@ -1,0 +1,19 @@
+{
+  "city": "Warszawa",
+  "available": {
+    "from": {
+      "place": "Warszawa Centralna",
+      "at": "2020-01-08 08:00:00"
+    },
+    "to": {
+      "place": "Warszawa Centralna",
+      "at": "2020-01-08 20:00:00"
+    }
+  },
+  "pois": {
+    "U Szwejka": 60,
+    "ORZO": 60,
+    "Secado": 40,
+    "Pomnik Wincentego Witosa": 20
+  }
+}

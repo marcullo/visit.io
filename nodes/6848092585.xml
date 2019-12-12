@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.7.5 (13736 thorn-02.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="6848092585" visible="true" version="1" changeset="75243035" timestamp="2019-10-03T16:00:13Z" user="gickel" uid="10290583" lat="52.2224751" lon="21.0151730">
+  <tag k="amenity" v="restaurant"/>
+  <tag k="name" v="ORZO"/>
+ </node>
+</osm>
