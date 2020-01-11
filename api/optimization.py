@@ -32,6 +32,8 @@ class Optimization:
             step = Step(s, pois_ids)
             self.steps.append(step)
 
+        log(self, indent=0, verbose=True)
+
     def __repr__(self):
         return json.dumps({
             'time': {

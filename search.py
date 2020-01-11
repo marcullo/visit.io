@@ -6,9 +6,11 @@ from api.argparser import parse_args
 from api.city import City
 from api.db import Database
 from api.geocode import Geocode
+from api.optimization import Optimization
 from api.params import Params
 from api.poi import Poi
 from api.target import Target
+from api.visualize import visualize
 from api.logger import log
 from api.openrouteservice import request_point, request_node, request_route_optimization
 
@@ -118,6 +120,16 @@ if __name__ == '__main__':
         params.set_relative_time_window()
 
         targets = []
+        pois_to_visualize = {
+            'start': start_point,
+            'end': end_point,
+            'visit': []
+        }
+        pois_ids = {
+            'start': start_point.id,
+            'end': end_point.id,
+            'visit': []
+        }
 
         for poi in pois:
             poi = fetch.poi(name=poi, city=city)
@@ -125,6 +137,8 @@ if __name__ == '__main__':
                 duration_of_stay = pois[poi.name] * 60  # in seconds
                 target = Target(poi, duration_of_stay)
                 targets.append(target)
+                pois_to_visualize['visit'].append(poi)
+                pois_ids['visit'].append(poi.id)
 
                 log(poi, indent=0, verbose=True)
                 log(target, indent=0, verbose=True)
@@ -132,8 +146,7 @@ if __name__ == '__main__':
         fetch.stats()
 
         optimization_content = fetch.optimization(targets, params)
-
-        import json
-        print(json.dumps(optimization_content, indent=2))
+        optimization = Optimization(optimization_content, pois_ids)
+        visualize(optimization, pois_to_visualize)
     except KeyboardInterrupt:
         print()
