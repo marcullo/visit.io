@@ -2,12 +2,12 @@
   "city": "Warszawa",
   "available": {
     "from": {
-      "place": "Warszawa Centralna",
-      "at": "2020-01-08 08:00:00"
+      "place": "Pętla Dworzec Centralny",
+      "at": "2020-01-06 08:00:00"
     },
     "to": {
-      "place": "Warszawa Centralna",
-      "at": "2020-01-08 20:00:00"
+      "place": "Pętla Dworzec Centralny",
+      "at": "2020-01-10 20:00:00"
     }
   },
   "pois": {

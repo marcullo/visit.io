@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<osm version="0.6" generator="CGImap 0.7.5 (23439 thorn-02.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+<osm version="0.6" generator="CGImap 0.7.5 (15664 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
  <node id="312892887" visible="true" version="7" changeset="44825099" timestamp="2017-01-01T15:57:42Z" user="Andrzej3345" uid="1875665" lat="52.2248972" lon="21.0152518">
   <tag k="amenity" v="restaurant"/>
   <tag k="contact:phone" v="+48 608707799"/>

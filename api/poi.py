@@ -4,8 +4,10 @@ from utils import ophrs2tsa
 
 
 class Poi:
-    def __init__(self, filename=None, from_node=False, content=None):
-        if from_node:
+    def __init__(self, filename=None, init_from=None, content=None):
+        if init_from == 'geocode':
+            self._init_from_geocode(content)
+        elif init_from == 'node':
             self._init_from_node(content)
         else:
             with open(filename) as f:
@@ -14,6 +16,11 @@ class Poi:
                     self._init_itself_alone(content)
                 except json.decoder.JSONDecodeError:
                     raise AssertionError('Invalid content of city file: {}'.format(filename)) from None
+
+    def _init_from_geocode(self, content):
+        self.name = content.name
+        self.id = content.id
+        self.coordinates = content.coordinates[::-1]
 
     def _init_from_node(self, content):
         self.name = content.name

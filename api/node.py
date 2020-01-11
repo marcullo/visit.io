@@ -14,7 +14,7 @@ class Node:
         if 'id' in attrib:
             self.id = int(attrib['id'])
         if 'lat' in attrib and 'lon' in attrib:
-            self.coordinates = [attrib['lat'], attrib['lon']]
+            self.coordinates = [float(attrib['lat']), float(attrib['lon'])]
 
         for tag in node:
             attrib = tag.attrib

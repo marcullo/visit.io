@@ -1,7 +1,10 @@
 {
   "name": "U Szwejka",
   "id": 316886479,
-  "coordinates": [52.2212657, 21.0160660],
+  "coordinates": [
+    52.2212657,
+    21.016066
+  ],
   "city": "Warszawa",
   "amenity": "restaurant",
   "opening hours": "Mo-Fr 08:00-00:00; Sa 10:00-00:00; Su 13:00-00:00"

@@ -10,7 +10,7 @@ class Geocode:
         features = content['features'][0]
         properties = features['properties']
         self.name = properties['name']
-        self.id = int(properties['id'].replace('node/', ''))
+        self.id, self.type = Geocode._extract_id(properties['id'])
         self.country = properties['country']
         self.coordinates = features['geometry']['coordinates']
         self.bbox = content['bbox']
@@ -23,14 +23,26 @@ class Geocode:
             'country': self.country,
             'coordinates': self.coordinates,
             'bbox': self.bbox,
-            'source': self.source
+            'source': self.source,
+            'type': self.type
         }, indent=2, ensure_ascii=False)
 
     def is_osm(self):
         return self.source == 'openstreetmap'
 
     @staticmethod
-    def get_id(content):
+    def _extract_id(id_str):
+        type = 'node'
+        if 'node' in id_str:
+            id_str = id_str.replace('node/', '')
+        if 'polyline' in id_str:
+            type = 'polyline'
+            id_str = id_str.replace('polyline:', '')
+
+        return int(id_str), type
+
+    @staticmethod
+    def get_id_type(content):
         try:
             features = content['features']
 
@@ -41,9 +53,14 @@ class Geocode:
             properties = features[0]['properties']
             id = properties['id']
 
-            return int(id.replace('node/', ''))
+            return Geocode._extract_id(id)
         except (IndexError, ValueError):
             raise BufferError('Unsupported node: {}'.format(id)) from None
+
+    @staticmethod
+    def get_id(content):
+        id, type = Geocode.get_id_type(content)
+        return id
 
     @staticmethod
     def get_name(content):

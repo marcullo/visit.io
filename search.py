@@ -6,9 +6,11 @@ from api.argparser import parse_args
 from api.city import City
 from api.db import Database
 from api.geocode import Geocode
+from api.params import Params
 from api.poi import Poi
+from api.target import Target
 from api.logger import log
-from api.openrouteservice import Params, request_point, request_node
+from api.openrouteservice import request_point, request_node, request_route_optimization
 
 
 class Fetch:
@@ -43,7 +45,7 @@ class Fetch:
             osm_only=True)
 
         try:
-            id = Geocode.get_id(content)
+            id, type = Geocode.get_id_type(content)
         except BufferError as e:
             log('Warning: {}'.format(e))
             log('Skipping: {}'.format(name))
@@ -52,16 +54,32 @@ class Fetch:
         name = Geocode.get_name(content)
         self._db.put_geocode(id=id, content=content)
 
-        content = request_node(id=id, api_key=self._api_key)
-        node = self._db.put_node(id=id, content=content)
+        if type == 'polyline':
+            geocode = Fetch.try_fetch(self._db.get_geocode, id)
+            poi = Poi(init_from='geocode', content=geocode)
+        else:
+            content = request_node(id=id, api_key=self._api_key)
+            node = self._db.put_node(id=id, content=content)
+            poi = Poi(init_from='node', content=node)
 
-        poi = Poi(from_node=True, content=node)
         poi = self._db.put_poi(name=name, content=poi)
 
         return poi
 
+    def point(self, name, city):
+        return self.poi(name=name, city=city)
+
     def stats(self):
         self._db.print_stats()
+
+    def optimization(self, targets, params):
+        if not targets:
+            log('Warning: Nothing to optimize!')
+            exit(0)
+
+        content = request_route_optimization(targets=targets, params=params, api_key=self._api_key)
+
+        return content
 
     @staticmethod
     def try_fetch(query, argument):
@@ -90,11 +108,32 @@ if __name__ == '__main__':
         city = fetch.city(name=city)
         log(city, indent=0, verbose=True)
 
+        start_point = fetch.point(name=params.from_place, city=city)
+        log(start_point, indent=0, verbose=True)
+
+        end_point = fetch.point(name=params.to_place, city=city)
+        log(end_point, indent=0, verbose=True)
+
+        params.set_coordinates(coord_from=start_point.coordinates, coord_to=end_point.coordinates)
+        params.set_relative_time_window()
+
+        targets = []
+
         for poi in pois:
             poi = fetch.poi(name=poi, city=city)
             if poi:
+                duration_of_stay = pois[poi.name] * 60  # in seconds
+                target = Target(poi, duration_of_stay)
+                targets.append(target)
+
                 log(poi, indent=0, verbose=True)
+                log(target, indent=0, verbose=True)
 
         fetch.stats()
-    except (KeyboardInterrupt):
+
+        optimization_content = fetch.optimization(targets, params)
+
+        import json
+        print(json.dumps(optimization_content, indent=2))
+    except KeyboardInterrupt:
         print()

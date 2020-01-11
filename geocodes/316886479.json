@@ -3,7 +3,7 @@
     "version": "0.2",
     "attribution": "http://192.168.2.20:3100/attribution",
     "query": {
-      "text": "Pomnik Wincentego Witosa",
+      "text": "U Szwejka",
       "size": 1,
       "sources": [
         "openstreetmap"
@@ -29,7 +29,7 @@
       "querySize": 20,
       "parser": "pelias",
       "parsed_text": {
-        "subject": "Pomnik Wincentego Witosa"
+        "subject": "U Szwejka"
       }
     },
     "warnings": [
@@ -40,7 +40,7 @@
       "author": "Mapzen",
       "version": "1.0"
     },
-    "timestamp": 1578738384447
+    "timestamp": 1578738383611
   },
   "type": "FeatureCollection",
   "features": [
@@ -49,17 +49,19 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          21.023578,
-          52.22769
+          21.016066,
+          52.221266
         ]
       },
       "properties": {
-        "id": "node/349915658",
-        "gid": "openstreetmap:venue:node/349915658",
+        "id": "node/316886479",
+        "gid": "openstreetmap:venue:node/316886479",
         "layer": "venue",
         "source": "openstreetmap",
-        "source_id": "node/349915658",
-        "name": "Pomnik Wincentego Witosa",
+        "source_id": "node/316886479",
+        "name": "U Szwejka",
+        "housenumber": "1",
+        "street": "Plac Konstytucji",
         "confidence": 1,
         "match_type": "exact",
         "accuracy": "point",
@@ -75,14 +77,14 @@
         "neighbourhood_gid": "whosonfirst:neighbourhood:85906679",
         "continent": "Europe",
         "continent_gid": "whosonfirst:continent:102191581",
-        "label": "Pomnik Wincentego Witosa, Warsaw, Poland"
+        "label": "U Szwejka, Warsaw, Poland"
       }
     }
   ],
   "bbox": [
-    21.023578,
-    52.22769,
-    21.023578,
-    52.22769
+    21.016066,
+    52.221266,
+    21.016066,
+    52.221266
   ]
 }

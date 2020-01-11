@@ -1,25 +1,6 @@
-import requests
 import json
+import requests
 from logger import log
-from .utils import str2ts
-
-
-class Params:
-    def __init__(self, path):
-        with open(path) as f:
-            raw = json.load(f)
-            available = raw['available']
-
-        self.raw = raw
-        self.city = raw['city']
-        self.from_place = available['from']['place']
-        self.from_at = str2ts(available['from']['at'])
-        self.to_place = available['to']['place']
-        self.to_at = str2ts(available['to']['at'])
-        self.pois = raw['pois']
-
-    def __repr__(self):
-        return json.dumps(self.raw, indent=2, ensure_ascii=False)
 
 
 def request_point(name, api_key, city=None, osm_only=False):
@@ -54,3 +35,43 @@ def request_node(id, api_key):
     log('ors/node: got {}'.format(id))
 
     return res.text
+
+
+def request_route_optimization(targets, params, api_key):
+    endpoint = 'https://api.openrouteservice.org/optimization'
+
+    jobs = []
+    for i, t, in enumerate(targets):
+        jobs.append({
+            'id': i,
+            'location': t.coordinates[::-1],
+            'service': t.duration,
+            'time_windows': t.opening_timestamps
+        })
+
+    vehicles = [{
+        'id': 0,
+        'profile': 'driving-car',
+        'start': params.from_coordinates[::-1],
+        'end': params.to_coordinates[::-1],
+        'time_window': [params.from_at, params.to_at]
+    }]
+
+    payload = {
+        'jobs': jobs,
+        'vehicles': vehicles
+    }
+    headers = {
+        'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+        'Authorization': '5b3ce3597851110001cf6248ed4ab5fb3aca4d63a68c203ddd8fc8a5'
+    }
+
+    log('ors/optimization: payload:', verbose=True)
+    log(json.dumps(payload, indent=2), indent=0, verbose=True)
+
+    res = requests.post(endpoint, json=payload, headers=headers)
+    res.raise_for_status()
+    log('ors/optimization: got:', verbose=True)
+    log(json.dumps(res.json(), indent=2), indent=0, verbose=True)
+
+    return res.json()

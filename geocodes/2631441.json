@@ -3,7 +3,7 @@
     "version": "0.2",
     "attribution": "http://192.168.2.20:3100/attribution",
     "query": {
-      "text": "Pomnik Wincentego Witosa",
+      "text": "Pętla Dworzec Centralny",
       "size": 1,
       "sources": [
         "openstreetmap"
@@ -27,9 +27,9 @@
         "defaulted": true
       },
       "querySize": 20,
-      "parser": "pelias",
+      "parser": "libpostal",
       "parsed_text": {
-        "subject": "Pomnik Wincentego Witosa"
+        "street": "pętla dworzec centralny"
       }
     },
     "warnings": [
@@ -40,7 +40,7 @@
       "author": "Mapzen",
       "version": "1.0"
     },
-    "timestamp": 1578738384447
+    "timestamp": 1578745767556
   },
   "type": "FeatureCollection",
   "features": [
@@ -49,20 +49,21 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          21.023578,
-          52.22769
+          21.002669,
+          52.229069
         ]
       },
       "properties": {
-        "id": "node/349915658",
-        "gid": "openstreetmap:venue:node/349915658",
-        "layer": "venue",
+        "id": "polyline:2631441",
+        "gid": "openstreetmap:street:polyline:2631441",
+        "layer": "street",
         "source": "openstreetmap",
-        "source_id": "node/349915658",
-        "name": "Pomnik Wincentego Witosa",
+        "source_id": "polyline:2631441",
+        "name": "Pętla Dworzec Centralny",
+        "street": "Pętla Dworzec Centralny",
         "confidence": 1,
         "match_type": "exact",
-        "accuracy": "point",
+        "accuracy": "centroid",
         "country": "Poland",
         "country_gid": "whosonfirst:country:85633723",
         "country_a": "POL",
@@ -71,18 +72,24 @@
         "region_a": "MZ",
         "locality": "Warsaw",
         "locality_gid": "whosonfirst:locality:101752777",
-        "neighbourhood": "Ujazdow",
-        "neighbourhood_gid": "whosonfirst:neighbourhood:85906679",
+        "neighbourhood": "Śródmieście",
+        "neighbourhood_gid": "whosonfirst:neighbourhood:85898119",
         "continent": "Europe",
         "continent_gid": "whosonfirst:continent:102191581",
-        "label": "Pomnik Wincentego Witosa, Warsaw, Poland"
-      }
+        "label": "Pętla Dworzec Centralny, Warsaw, Poland"
+      },
+      "bbox": [
+        21.002065,
+        52.228981,
+        21.003261,
+        52.229198
+      ]
     }
   ],
   "bbox": [
-    21.023578,
-    52.22769,
-    21.023578,
-    52.22769
+    21.002065,
+    52.228981,
+    21.003261,
+    52.229198
   ]
 }
