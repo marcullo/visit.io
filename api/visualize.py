@@ -45,10 +45,17 @@ def _create_markers(steps, pois):
 
 
 def _attach_markers(markers, gmap):
+    start = markers[0]
+    end = markers[-1]
+
+    if start.id == end.id:
+        start.set_end(end.arrival)
+
     for marker in markers[:-1]:
         marker.add_to_map(gmap)
-    if markers[-1].id != markers[0].id:
-        markers[-1].add_to_map(gmap)
+
+    if start.id != end.id:
+        end.add_to_map(gmap)
 
 
 def _connect_markers(markers, gmap):

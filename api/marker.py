@@ -52,16 +52,40 @@ class Marker:
         return json.dumps(content, indent=2)
 
     def _form_popup(self):
-        self.popup = self.name
+        popup = ''
+        self.popup_wide = False
+
+        duration = ' {}'.format(utils.duration_to_human_str(self.duration)) if hasattr(self, 'duration') else ''
+        amenity = ' in {}'.format(self.amenity) if hasattr(self, 'amenity') else ''
+        popup += '<b>{}</b>{}{}<br>'.format(self.name, duration, amenity)
+
+        if not self.start and not self.end:
+            popup += '{}: {}<br>'.format('Est. arrival', self.arrival)
+        if self.start:
+            popup += '{}: {}<br>'.format('Start', self.arrival)
+        if self.end and hasattr(self, 'departure'):
+            popup += '{}: {}<br>'.format('End', self.departure)
+
+        if hasattr(self, 'waiting') and self.waiting > 0:
+            popup += 'Waiting: {}<br>'.format(utils.duration_to_human_str(self.waiting))
+        if hasattr(self, 'opening_hours'):
+            popup += 'Opened: {}<br>'.format(self.opening_hours)
+            self.popup_wide = True
+
+        self.popup = popup
 
     def _form_tooltip(self):
         self.tooltip = self.name
 
     def add_to_map(self, gmap):
+        popup_width = 260 if self.popup_wide else 180
+        popup_html = folium.Html(self.popup, script=True)
+        popup = folium.Popup(popup_html, max_width=popup_width, min_width=popup_width)
+
         if self.icon:
-            folium.Marker(self.coordinates, popup=self.popup, tooltip=self.tooltip, icon=self.icon).add_to(gmap)
+            folium.Marker(self.coordinates, popup=popup, tooltip=self.tooltip, icon=self.icon).add_to(gmap)
         else:
-            folium.Marker(self.coordinates, popup=self.popup, tooltip=self.tooltip).add_to(gmap)
+            folium.Marker(self.coordinates, popup=popup, tooltip=self.tooltip).add_to(gmap)
 
     def connect(self, marker, gmap):
         if self.id == marker.id:
@@ -75,6 +99,11 @@ class Marker:
         arrows = utils.get_arrows(locations=[p1, p2], n_arrows=1)
         for arrow in arrows:
             arrow.add_to(gmap)
+
+    def set_end(self, departure):
+        self.departure = departure
+        self.end = True
+        self._form_popup()
 
 
 if __name__ == '__main__':
