@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-_LOG_PREFIX_LEN = 10
+_LOG_PREFIX_LEN = 16
 _VERBOSE = False
 
 
