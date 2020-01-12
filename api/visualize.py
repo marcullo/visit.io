@@ -71,10 +71,15 @@ def _attach_markers(gmap, markers, icons):
             folium.Marker(marker.coordinates, popup=marker.popup, tooltip=marker.tooltip).add_to(gmap)
 
 
-def _attach_path(gmap, points):
-    for i in range(len(points) - 1):
+def _attach_path(gmap, points, same_start_end):
+    pairs_nr = len(points) - 1
+
+    if same_start_end:
+        pairs_nr += 1
+
+    for i in range(pairs_nr):
         p1 = points[i]
-        p2 = points[i + 1]
+        p2 = points[i + 1] if i < len(points) - 1 else points[0]
         folium.PolyLine(locations=[p1, p2]).add_to(gmap)
         arrows = utils.get_arrows(locations=[p1, p2], n_arrows=1)
 
@@ -96,20 +101,25 @@ def visualize(optimization, pois):
     start = pois['start']
     end = pois['end']
     pois = pois['visit']
+    pois_with_start_end = [start]
+    pois_with_start_end.extend(pois)
 
     points = [start.coordinates]
     points.extend([poi.coordinates for poi in pois])
-    points.append(end.coordinates)
 
-    pois_with_start_end = [start]
-    pois_with_start_end.extend(pois)
-    pois_with_start_end.append(end)
+    same_start_end = start.id == end.id
+
+    if same_start_end:
+        log('visualize: same start and end')
+    else:
+        points.append(end.coordinates)
+        pois_with_start_end.append(end)
 
     gmap = _create_map(points)
     markers = _define_markers(optimization.steps, pois_with_start_end)
     icons = _get_icons(len(pois))
     _attach_markers(gmap, markers, icons)
-    _attach_path(gmap, points)
+    _attach_path(gmap, points, same_start_end=same_start_end)
     _save_map(gmap, output_filename)
     _run_map(output_filename)
 
