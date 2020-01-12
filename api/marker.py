@@ -77,6 +77,22 @@ class Marker:
     def _form_tooltip(self):
         self.tooltip = self.name
 
+    def _get_connection_description(self, neighbour, id):
+        desc = ''
+
+        travel_time = self.get_travel_time(neighbour)
+        desc += '<b>Step {}</b>: {}<br>'.format(id, travel_time)
+
+        return desc
+
+    def get_travel_time(self, neighbour):
+        travel_time = neighbour.arrival - self.arrival
+        if hasattr(self, 'waiting'):
+            travel_time -= self.waiting
+        if hasattr(self, 'duration'):
+            travel_time -= self.duration
+        return utils.duration_to_human_str(travel_time)
+
     def add_to_map(self, gmap):
         popup_width = 260 if self.popup_wide else 180
         popup_html = folium.Html(self.popup, script=True)
@@ -87,14 +103,20 @@ class Marker:
         else:
             folium.Marker(self.coordinates, popup=popup, tooltip=self.tooltip).add_to(gmap)
 
-    def connect(self, marker, gmap):
+    def connect(self, marker, gmap, pair_nr=None):
         if self.id == marker.id:
             return
 
+        popup_width = 140
         p1 = self.coordinates
         p2 = marker.coordinates
 
-        folium.PolyLine(locations=[p1, p2]).add_to(gmap)
+        connection_id = pair_nr + 1
+        desc = self._get_connection_description(neighbour=marker, id=connection_id)
+        popup_html = folium.Html(desc, script=True)
+        popup = folium.Popup(popup_html, max_width=popup_width, min_width=popup_width)
+
+        folium.PolyLine(locations=[p1, p2], popup=popup).add_to(gmap)
 
         arrows = utils.get_arrows(locations=[p1, p2], n_arrows=1)
         for arrow in arrows:

@@ -64,7 +64,7 @@ def _connect_markers(markers, gmap):
     for i in range(pairs_nr):
         m1 = markers[i]
         m2 = markers[i + 1]
-        m1.connect(m2, gmap)
+        m1.connect(m2, gmap, pair_nr=i)
 
 
 def _save_map(gmap, filename):
