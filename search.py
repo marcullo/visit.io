@@ -120,16 +120,9 @@ if __name__ == '__main__':
         params.set_relative_time_window()
 
         targets = []
-        pois_to_visualize = {
-            'start': start_point,
-            'end': end_point,
-            'visit': []
-        }
-        pois_ids = {
-            'start': start_point.id,
-            'end': end_point.id,
-            'visit': []
-        }
+        pois_to_visualize = []
+
+        pois_to_visualize.append(start_point)
 
         for poi in pois:
             poi = fetch.poi(name=poi, city=city)
@@ -137,11 +130,13 @@ if __name__ == '__main__':
                 duration_of_stay = pois[poi.name] * 60  # in seconds
                 target = Target(poi, duration_of_stay)
                 targets.append(target)
-                pois_to_visualize['visit'].append(poi)
-                pois_ids['visit'].append(poi.id)
+                pois_to_visualize.append(poi)
 
                 log(poi, indent=0, verbose=True)
                 log(target, indent=0, verbose=True)
+
+        pois_to_visualize.append(end_point)
+        pois_ids = list(map(lambda p: p.id, pois_to_visualize))
 
         fetch.stats()
 

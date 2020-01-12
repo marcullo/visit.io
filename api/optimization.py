@@ -46,22 +46,15 @@ class Optimization:
 
 
 if __name__ == '__main__':
-    pois = {
-        'start': Poi('pois/Pętla Dworzec Centralny.json'),
-        'end': Poi('pois/Pętla Dworzec Centralny.json'),
-        'visit': [
-            Poi('pois/U Szwejka.json'),
-            Poi('pois/ORZO.json'),
-            Poi('pois/Secado.json'),
-            Poi('pois/Pomnik Wincentego Witosa.json')
-        ]
-    }
-
-    pois_ids = {
-        'start': pois['start'].id,
-        'end': pois['end'].id,
-        'visit': list(map(lambda p: p.id, pois['visit']))
-    }
+    pois = [
+        Poi('pois/Pętla Dworzec Centralny.json'),
+        Poi('pois/U Szwejka.json'),
+        Poi('pois/ORZO.json'),
+        Poi('pois/Secado.json'),
+        Poi('pois/Pomnik Wincentego Witosa.json'),
+        Poi('pois/Pętla Dworzec Centralny.json')
+    ]
+    pois_ids = list(map(lambda p: p.id, pois))
 
     content_optimization = json.loads(optimization_example.OPTIMIZATION)
     optimization = Optimization(content_optimization, pois_ids)

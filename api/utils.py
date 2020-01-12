@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import calendar
+import datetime
 import folium
+import humanize
 import numpy as np
 import time
 from collections import namedtuple
@@ -169,8 +171,20 @@ def get_arrows(locations, color='blue', size=6, n_arrows=3):
     return arrows
 
 
+def duration_to_human_str(seconds):
+    return humanize.naturaldelta(datetime.timedelta(seconds=seconds))
+
+
 if __name__ == '__main__':
     opening_hours_str = 'Mo-Fr 08:00-00:00; Sa 07:00-08:00, 10:00-00:00; Su 00:00-04:00, 13:00-00:00'
     list_of_timestamps = ophrs2tsa(opening_hours_str)
     print('opening hours:', opening_hours_str)
     print('   list of ts:', list_of_timestamps)
+
+    human_durations = []
+    for ts_range in list_of_timestamps:
+        seconds = ts_range[1] - ts_range[0]
+        duration = duration_to_human_str(seconds)
+        human_durations.append(duration)
+
+    print('    human str:', human_durations)

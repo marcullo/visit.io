@@ -2,10 +2,9 @@
 import folium
 import json
 import optimization_example
-import utils
-import types
 import webbrowser
 from logger import log
+from marker import Marker
 from optimization import Optimization
 from poi import Poi
 
@@ -14,7 +13,16 @@ def _get_mass_center(points):
     return [sum([p[0] for p in points]) / len(points), sum([p[1] for p in points]) / len(points)]
 
 
-def _create_map(points):
+def _create_map(markers):
+    points = [m.coordinates for m in markers]
+
+    start = markers[0]
+    end = markers[-1]
+
+    if start.id == end.id:
+        log('visualize: same start and end')
+        points.pop()
+
     center = _get_mass_center(points)
 
     log('visualize: points: {}'.format(points), verbose=True)
@@ -27,64 +35,29 @@ def _create_map(points):
     )
 
 
-def _define_markers(steps, pois):
+def _create_markers(steps, pois):
     markers = []
-
     for step in steps:
-        marker = types.SimpleNamespace()
-
-        id = step.id
-        poi_candidates = [poi for poi in pois if poi.id == id]
-
-        if len(poi_candidates) == 0:
-            raise AssertionError('Poi for step id {} not found!'.format(id))
-
-        poi = poi_candidates[0]
-        marker.coordinates = poi.coordinates
-        marker.popup = poi.name
-        marker.tooltip = poi.name
-
+        poi = Poi.from_id(pois, step.id)
+        marker = Marker(poi, step)
         markers.append(marker)
-
     return markers
 
 
-def _get_icons(pois_nr):
-    icons = []
-
-    # start
-    icons.append(folium.Icon(icon='home'))
-
-    for i in range(pois_nr):
-        icons.append(None)
-
-    icons.append(folium.Icon(icon='home'))
-
-    return icons
+def _attach_markers(markers, gmap):
+    for marker in markers[:-1]:
+        marker.add_to_map(gmap)
+    if markers[-1].id != markers[0].id:
+        markers[-1].add_to_map(gmap)
 
 
-def _attach_markers(gmap, markers, icons):
-    for marker, icon in zip(markers, icons):
-        if icon is not None:
-            folium.Marker(marker.coordinates, popup=marker.popup, tooltip=marker.tooltip, icon=icon).add_to(gmap)
-        else:
-            folium.Marker(marker.coordinates, popup=marker.popup, tooltip=marker.tooltip).add_to(gmap)
-
-
-def _attach_path(gmap, points, same_start_end):
-    pairs_nr = len(points) - 1
-
-    if same_start_end:
-        pairs_nr += 1
+def _connect_markers(markers, gmap):
+    pairs_nr = len(markers) - 1
 
     for i in range(pairs_nr):
-        p1 = points[i]
-        p2 = points[i + 1] if i < len(points) - 1 else points[0]
-        folium.PolyLine(locations=[p1, p2]).add_to(gmap)
-        arrows = utils.get_arrows(locations=[p1, p2], n_arrows=1)
-
-        for arrow in arrows:
-            arrow.add_to(gmap)
+        m1 = markers[i]
+        m2 = markers[i + 1]
+        m1.connect(m2, gmap)
 
 
 def _save_map(gmap, filename):
@@ -97,50 +70,24 @@ def _run_map(filename):
 
 def visualize(optimization, pois):
     output_filename = 'optimization.html'
-
-    start = pois['start']
-    end = pois['end']
-    pois = pois['visit']
-    pois_with_start_end = [start]
-    pois_with_start_end.extend(pois)
-
-    points = [start.coordinates]
-    points.extend([poi.coordinates for poi in pois])
-
-    same_start_end = start.id == end.id
-
-    if same_start_end:
-        log('visualize: same start and end')
-    else:
-        points.append(end.coordinates)
-        pois_with_start_end.append(end)
-
-    gmap = _create_map(points)
-    markers = _define_markers(optimization.steps, pois_with_start_end)
-    icons = _get_icons(len(pois))
-    _attach_markers(gmap, markers, icons)
-    _attach_path(gmap, points, same_start_end=same_start_end)
+    markers = _create_markers(steps=optimization.steps, pois=pois)
+    gmap = _create_map(markers)
+    _attach_markers(markers, gmap)
+    _connect_markers(markers, gmap)
     _save_map(gmap, output_filename)
     _run_map(output_filename)
 
 
 if __name__ == '__main__':
-    pois = {
-        'start': Poi('pois/Pętla Dworzec Centralny.json'),
-        'end': Poi('pois/Pętla Dworzec Centralny.json'),
-        'visit': [
-            Poi('pois/U Szwejka.json'),
-            Poi('pois/ORZO.json'),
-            Poi('pois/Secado.json'),
-            Poi('pois/Pomnik Wincentego Witosa.json')
-        ]
-    }
-
-    pois_ids = {
-        'start': pois['start'].id,
-        'end': pois['end'].id,
-        'visit': list(map(lambda p: p.id, pois['visit']))
-    }
+    pois = [
+        Poi('pois/Pętla Dworzec Centralny.json'),
+        Poi('pois/U Szwejka.json'),
+        Poi('pois/ORZO.json'),
+        Poi('pois/Secado.json'),
+        Poi('pois/Pomnik Wincentego Witosa.json'),
+        Poi('pois/Pętla Dworzec Centralny.json')
+    ]
+    pois_ids = list(map(lambda p: p.id, pois))
 
     content_optimization = json.loads(optimization_example.OPTIMIZATION)
     optimization = Optimization(content_optimization, pois_ids)

@@ -8,16 +8,18 @@ class Step:
     def __init__(self, content, pois_ids):
         type = content['type']
 
+        self.start = False
+        self.end = False
+        self.arrival = content['arrival']
+
         if type == 'start':
-            self.id = pois_ids['start']
+            self.id = pois_ids[0]
             self.start = True
         elif type == 'end':
-            self.id = pois_ids['end']
+            self.id = pois_ids[-1]
             self.end = True
         else:
-            self.id = pois_ids['visit'][content['job']]
-
-        self.arrival = content['arrival']
+            self.id = pois_ids[content['job'] + 1]
 
         if 'waiting_time' in content:
             self.waiting = content['waiting_time']
@@ -44,22 +46,15 @@ class Step:
 
 
 if __name__ == '__main__':
-    pois = {
-        'start': Poi('pois/Pętla Dworzec Centralny.json'),
-        'end': Poi('pois/Pętla Dworzec Centralny.json'),
-        'visit': [
-            Poi('pois/U Szwejka.json'),
-            Poi('pois/ORZO.json'),
-            Poi('pois/Secado.json'),
-            Poi('pois/Pomnik Wincentego Witosa.json')
-        ]
-    }
-
-    pois_ids = {
-        'start': pois['start'].id,
-        'end': pois['end'].id,
-        'visit': list(map(lambda p: p.id, pois['visit']))
-    }
+    pois = [
+        Poi('pois/Pętla Dworzec Centralny.json'),
+        Poi('pois/U Szwejka.json'),
+        Poi('pois/ORZO.json'),
+        Poi('pois/Secado.json'),
+        Poi('pois/Pomnik Wincentego Witosa.json'),
+        Poi('pois/Pętla Dworzec Centralny.json')
+    ]
+    pois_ids = list(map(lambda p: p.id, pois))
 
     content_steps = json.loads(optimization_example.STEPS)
     print('step by step:')

@@ -64,6 +64,13 @@ class Poi:
 
         return json.dumps(content, indent=2, ensure_ascii=False)
 
+    @staticmethod
+    def from_id(pois, id):
+        for poi in pois:
+            if poi.id == id:
+                return poi
+        return None
+
 
 if __name__ == '__main__':
     poi = Poi('pois/U Szwejka.json')
