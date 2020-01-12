@@ -16,8 +16,9 @@ from api.openrouteservice import request_point, request_node, request_route_opti
 
 
 class Fetch:
-    def __init__(self, db, api_key):
+    def __init__(self, db, profile, api_key):
         self._db = db
+        self._profile = profile
         self._api_key = api_key
 
     def city(self, name):
@@ -79,7 +80,7 @@ class Fetch:
             log('Warning: Nothing to optimize!')
             exit(0)
 
-        content = request_route_optimization(targets=targets, params=params, api_key=self._api_key)
+        content = request_route_optimization(targets=targets, params=params, profile=self._profile, api_key=self._api_key)
 
         return content
 
@@ -98,8 +99,8 @@ if __name__ == '__main__':
     try:
         args = parse_args()
         db = Database()
-        fetch = Fetch(db=db, api_key=args.api_key)
         params = Params(args.params)
+        fetch = Fetch(db=db, profile=params.profile, api_key=args.api_key)
 
         city = params.city
         pois = params.pois

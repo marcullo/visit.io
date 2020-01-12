@@ -22,3 +22,11 @@ Let's test and learn the [Optimization Service](https://openrouteservice.org/dev
 ```shell
 ./search.py --api_key TOKEN --params params/example.json
 ```
+
+**Note**: You can change profile (way of transport), by selecting from the following (hopefully, because checked `driving car` and `foot-walking` only):
+
+- `driving-car`
+- `foot-walking`
+- `cycling-regular`
+- `cycling-road`
+- (and some [more](https://github.com/GIScience/openrouteservice/wiki/Configuration-(app.config)#orsservicesroutingprofiles) might be in the future)

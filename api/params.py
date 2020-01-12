@@ -17,6 +17,16 @@ class Params:
         self.to_place = available['to']['place']
         self.to_at = str2ts(available['to']['at'])
         self.pois = raw['pois']
+        self.profile = raw['profile']
+
+        profiles = [
+            'driving-car',
+            'foot-walking',
+            'cycling-regular',
+            'cycling-road'
+        ]
+        if self.profile not in profiles:
+            raise AssertionError('Profile {} not supported'.format(self.profile))
 
     def __repr__(self):
         content = {
@@ -31,7 +41,8 @@ class Params:
                     'at': self.to_at
                 }
             },
-            'pois': self.pois
+            'pois': self.pois,
+            'profile': self.profile
         }
 
         if hasattr(self, 'from_coordinates'):
