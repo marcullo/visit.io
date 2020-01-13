@@ -4,8 +4,13 @@ Let's test and learn the [Optimization Service](https://openrouteservice.org/dev
 
 ## Requirements
 
-- Account on [openrouteservice](https://openrouteservice.org/dev/#/signup) (on Firefox had some problems but on Chrome registered well).
-- `requests` python package.
+- [openrouteservice](https://openrouteservice.org/dev/#/signup) account (on Firefox had problems once but on Chrome registered well).
+
+- packages:
+
+```
+folium humanize numpy requests
+```
 
 ## Getting started
 
@@ -31,3 +36,11 @@ Let's test and learn the [Optimization Service](https://openrouteservice.org/dev
 - `cycling-regular`
 - `cycling-road`
 - (and some [more](https://github.com/GIScience/openrouteservice/wiki/Configuration-(app.config)#orsservicesroutingprofiles) might be in the future)
+
+## Development
+
+You can test either of api module by calling it.
+
+```shell
+./api/visualize.py
+```
