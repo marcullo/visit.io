@@ -65,9 +65,9 @@
                     name="timeInPlace"
                     type="text"
                   />
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
+                  </v-form>
+                </v-card-text>
+                <v-card-actions>
                 <v-spacer />
                 <v-btn color="primary">Dodaj</v-btn>
               </v-card-actions>
@@ -80,9 +80,32 @@
 </template>
 
 <script>
+import format from 'date-fns/format'
+
   export default {
     props: {
       source: String,
     },
+    data() {
+      return {
+        due: null,
+        menu: false
+      }
+    },
+
+      methods: {
+    submit() {
+      if(this.$refs.form.validate()) {
+       // console.log(this.title, this.content)
+      }
+    }
+  },
+
+    computed: {
+    formattedDate () {
+      //console.log(this.due)
+      return this.due ? format(this.due, 'Do MMM YYYY') : ''
+    }
+  }
   }
 </script>
