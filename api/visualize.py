@@ -2,6 +2,8 @@
 import folium
 import json
 import optimization_example
+import os
+import platform
 import webbrowser
 from logger import log
 from marker import Marker
@@ -72,7 +74,10 @@ def _save_map(gmap, filename):
 
 
 def _run_map(filename):
-    webbrowser.open(filename)
+    if platform.system().lower() == 'darwin':
+        os.system(f'open /Applications/Safari.app {filename}')
+    else:
+        webbrowser.open(filename)
 
 
 def visualize(optimization, pois):
