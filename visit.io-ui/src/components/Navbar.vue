@@ -11,7 +11,6 @@
 
       <v-divider
         class="mx-4"
-        :inset="inset"
         vertical
       ></v-divider>
 
@@ -51,6 +50,6 @@
 
 <script>
 export default {
-    name: 'Navbar'
+  name: 'Navbar'
 }
 </script>

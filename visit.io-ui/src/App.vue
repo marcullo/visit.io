@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import MainView from '@/components/MainView'
 import Navbar from '@/components/Navbar'
+import MainView from '@/components/MainView'
 
 export default {
   name: 'App',
@@ -16,5 +16,5 @@ export default {
     MainView
   },
   data: () => ({})
-};
+}
 </script>
