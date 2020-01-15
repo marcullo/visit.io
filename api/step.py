@@ -2,6 +2,7 @@
 import json
 import optimization_example
 from poi import Poi
+from utils import i2dt, ts2dt
 
 
 class Step:
@@ -10,7 +11,7 @@ class Step:
 
         self.start = False
         self.end = False
-        self.arrival = content['arrival']
+        self.arrival = ts2dt(content['arrival'])
 
         if type == 'start':
             self.id = pois_ids[0]
@@ -22,10 +23,10 @@ class Step:
             self.id = pois_ids[content['job'] + 1]
 
         if 'waiting_time' in content:
-            self.waiting = content['waiting_time']
+            self.waiting = i2dt(content['waiting_time'])
 
         if 'service' in content:
-            self.duration = content['service']
+            self.duration = i2dt(content['service'])
 
     def __repr__(self):
         return json.dumps(self.dict(), indent=2)
@@ -33,14 +34,14 @@ class Step:
     def dict(self):
         content = {
             'id': self.id,
-            'arrival': self.arrival
+            'arrival': str(self.arrival)
         }
 
         if hasattr(self, 'duration'):
-            content['duration of stay'] = self.duration
+            content['duration of stay'] = str(self.duration)
 
         if hasattr(self, 'waiting'):
-            content['waiting time'] = self.waiting
+            content['waiting time'] = str(self.waiting) if self.waiting else None
 
         return content
 

@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 import calendar
-import datetime
 import folium
 import humanize
 import numpy as np
 import time
 from collections import namedtuple
+from datetime import datetime, timedelta
 
 _DAY_MAP = {
-    'Mo': 1,
-    'Tu': 2,
-    'We': 3,
-    'Th': 4,
-    'Fr': 5,
-    'Sa': 6,
-    'Su': 7
+    'Mo': 0,
+    'Tu': 1,
+    'We': 2,
+    'Th': 3,
+    'Fr': 4,
+    'Sa': 5,
+    'Su': 6
 }
 
 
@@ -32,6 +32,26 @@ def recursive_merge(inter, start_index=0):
 def str2ts(val):
     """Convert string to timestamp"""
     return calendar.timegm(time.strptime(val, "%Y-%m-%d %H:%M:%S"))
+
+
+def ts2dt(val):
+    """Convert timestamp to local datetime"""
+    return datetime.fromtimestamp(val)
+
+
+def i2dt(val):
+    """Convert integer to timedelta"""
+    if not val:
+        return None
+    return timedelta(seconds=val)
+
+
+def str2dt(val, with_tz=False):
+    """Convert string to datetime"""
+    dt = datetime.strptime(val, '%Y-%m-%d %H:%M:%S')
+    if with_tz:
+        return dt.astimezone()
+    return dt
 
 
 def strhr2sec(hour):
@@ -52,6 +72,15 @@ def sec2strday(seconds):
     """Convert seconds to string day"""
     day_nr = int(seconds / 86400)
     return _DAY_MAP.values().index(day_nr)
+
+
+def dt2strday(dt):
+    """Convert datetime to string day"""
+    weekday = dt.weekday()
+    for v in _DAY_MAP:
+        if _DAY_MAP[v] == weekday:
+            return v
+    return None
 
 
 def sec2strhr(seconds):
@@ -96,6 +125,43 @@ def ophrs2tsa(opening_hours_str):
 
     # Merge ranges
     return recursive_merge(timestamp_list.copy())
+
+
+def _populate_datetime_ranges(opening_timestamps_week, start, end):
+    start_midnight = start.replace(hour=0, minute=0, second=0, microsecond=0)
+    end_midnight = end.replace(hour=0, minute=0, second=0, microsecond=0)
+    last_monday = start_midnight - timedelta(days=start_midnight.weekday())
+    delta = end_midnight - last_monday
+    weeks = int(delta.days / 7) + 1  # including not full week
+    opening_datetimes = []
+
+    for i in range(weeks):
+        monday_delta_s = i * 604800
+        for (tss, tse) in opening_timestamps_week:
+            seconds_start = monday_delta_s + tss
+            seconds_end = monday_delta_s + tse
+            dts = last_monday + timedelta(seconds=seconds_start)
+            dte = last_monday + timedelta(seconds=seconds_end)
+            dtr = (dts, dte)
+
+            if dts <= end and dte >= start:
+                opening_datetimes.append(dtr)
+
+    return opening_datetimes
+
+
+def ohs2dtrstr(opening_hours_str, start, end):
+    """Convert opening hours string to datetime ranges array within specified range in string"""
+    start_dt = str2dt(start, with_tz=True)
+    end_dt = str2dt(end, with_tz=True)
+    return ohs2dtrdt(opening_hours_str=opening_hours_str, start_dt=start_dt, end_dt=end_dt)
+
+
+def ohs2dtrdt(opening_hours_str, start_dt, end_dt):
+    """Convert opening hour string to datetime ranges array withing specified range in datetime"""
+    opening_timestamps_week = ophrs2tsa(opening_hours_str)
+    datetimes = _populate_datetime_ranges(opening_timestamps_week, start=start_dt, end=end_dt)
+    return datetimes
 
 
 def get_bearing(p1, p2):
@@ -171,8 +237,14 @@ def get_arrows(locations, color='blue', size=6, n_arrows=3):
     return arrows
 
 
-def duration_to_human_str(seconds):
-    return humanize.naturaldelta(datetime.timedelta(seconds=seconds))
+def dt2hstr(dt):
+    """Convert datetime to human string"""
+    return humanize.naturaltime(dt)
+
+
+def td2hstr(td):
+    """Convert timedelta to human string"""
+    return humanize.naturaldelta(td)
 
 
 if __name__ == '__main__':
@@ -181,10 +253,15 @@ if __name__ == '__main__':
     print('opening hours:', opening_hours_str)
     print('   list of ts:', list_of_timestamps)
 
-    human_durations = []
-    for ts_range in list_of_timestamps:
-        seconds = ts_range[1] - ts_range[0]
-        duration = duration_to_human_str(seconds)
-        human_durations.append(duration)
+    start = '2020-01-10 10:00:00'
+    end = '2020-01-14 16:00:00'
+    opening_datetimes = ohs2dtrstr(opening_hours_str, start=start, end=end)
+    print('        range:', start, '-', end)
+    print(' within range:', ['{} - {}'.format(dts, dte) for (dts, dte) in opening_datetimes])
 
+    human_durations = []
+    for dt_range in opening_datetimes:
+        dt_delta = dt_range[1] - dt_range[0]
+        duration = td2hstr(dt_delta)
+        human_durations.append(duration)
     print('    human str:', human_durations)

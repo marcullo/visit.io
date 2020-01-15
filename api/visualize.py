@@ -4,7 +4,9 @@ import json
 import optimization_example
 import os
 import platform
+import utils
 import webbrowser
+from functools import reduce
 from logger import log
 from marker import Marker
 from optimization import Optimization
@@ -76,14 +78,73 @@ def _save_map(gmap, filename):
 def _run_map(filename):
     if platform.system().lower() == 'darwin':
         os.system(f'open /Applications/Safari.app {filename}')
-    else:
-        webbrowser.open(filename)
+        return
+
+    webbrowser.open(filename)
+
+
+def _log_stats(optimization):
+    log('path: {}'.format(optimization.stats))
+
+
+def _log_path(markers):
+    path = ''
+    header = 'path:'
+
+    just_lengths = [3, 40, 10, 24, 10, 10, 20]
+    columns = [
+        '[ nr]',
+        'node',
+        'travel',
+        'arrived',
+        'wait',
+        'visit',
+        'opening hours'
+    ]
+
+    for i, c in enumerate(columns):
+        header += ' {}'.format(c.ljust(just_lengths[i]))
+
+    just_sum = reduce((lambda x, y: x + y + 1), just_lengths) + 1
+    separator = 'path: {}'.format('-' * just_sum)
+
+    log(separator)
+    log(header)
+    log(separator)
+
+    for i, marker in enumerate(markers):
+        index = '[{:>3}]'.format(str(i) if i > 0 and i < len(markers) - 1 else ' ↦ ' if i == 0 else ' ⇥ ')
+        name = marker.name
+        travel = str(markers[i - 1].get_travel_time(marker)) if i > 0 else ''
+        arrival = str(marker.arrival) + ' ({})'.format(utils.dt2strday(marker.arrival))
+        waiting = str(marker.waiting) if marker.waiting else ''
+        visit = str(marker.duration) if marker.duration else ''
+        opening_hours = marker.opening_hours if hasattr(marker, 'opening_hours') else ''
+
+        row = 'path:'
+        cells = [
+            index,
+            name,
+            travel,
+            arrival,
+            waiting,
+            visit,
+            opening_hours
+        ]
+
+        for j, c in enumerate(cells):
+            row += ' {}'.format(c.ljust(just_lengths[j]))
+
+        log(row)
 
 
 def visualize(optimization, pois):
     output_filename = 'optimization.html'
     markers = _create_markers(steps=optimization.steps, pois=pois)
     gmap = _create_map(markers)
+    _log_stats(optimization)
+    _log_path(markers)
+
     _attach_markers(markers, gmap)
     _connect_markers(markers, gmap)
     _save_map(gmap, output_filename)
@@ -102,6 +163,6 @@ if __name__ == '__main__':
     pois_ids = list(map(lambda p: p.id, pois))
 
     content_optimization = json.loads(optimization_example.OPTIMIZATION)
-    optimization = Optimization(content_optimization, pois_ids)
+    optimization = Optimization(content_optimization, pois_ids, profile='driving-car')
 
     visualize(optimization, pois)

@@ -16,6 +16,8 @@ class Marker:
         self.end = step.end
         self.icon = folium.Icon(icon='home') if step.start or step.end else None
         self.arrival = step.arrival
+        self.waiting = None
+        self.duration = None
 
         if hasattr(poi, 'amenity'):
             self.amenity = poi.amenity
@@ -36,7 +38,7 @@ class Marker:
             'coordinates': self.coordinates,
             'start': self.start,
             'end': self.end,
-            'arrival': self.arrival,
+            'arrival': str(self.arrival),
             'icon': self.icon.options['icon'] if self.icon else None
         }
 
@@ -44,10 +46,9 @@ class Marker:
             content['amenity'] = self.amenity
         if hasattr(self, 'opening_hours'):
             content['opening_hours'] = self.opening_hours
-        if hasattr(self, 'waiting'):
-            content['waiting time'] = self.waiting
-        if hasattr(self, 'duration'):
-            content['duration of stay'] = self.duration
+
+        content['waiting time'] = str(self.waiting) if self.waiting else None
+        content['duration of stay'] = str(self.duration) if self.duration else None
 
         return json.dumps(content, indent=2, ensure_ascii=False)
 
@@ -55,21 +56,23 @@ class Marker:
         popup = ''
         self.popup_wide = False
 
-        duration = ' {}'.format(utils.duration_to_human_str(self.duration)) if hasattr(self, 'duration') else ''
+        duration = ' {}'.format(utils.td2hstr(self.duration)) if self.duration else ''
         amenity = ' in {}'.format(self.amenity) if hasattr(self, 'amenity') else ''
         popup += '<b>{}</b>{}{}<br>'.format(self.name, duration, amenity)
 
+        raw_arrival = self.arrival
+        arrival = utils.dt2hstr(self.arrival)
         if not self.start and not self.end:
-            popup += '{}: {}<br>'.format('Est. arrival', self.arrival)
+            popup += '{} {} ({})<br>'.format('↷', raw_arrival, arrival)
         if self.start:
-            popup += '{}: {}<br>'.format('Start', self.arrival)
+            popup += '{} {} ({})<br>'.format('↦', raw_arrival, arrival)
         if self.end and hasattr(self, 'departure'):
-            popup += '{}: {}<br>'.format('End', self.departure)
+            popup += '{} {} ({})<br>'.format('⇥', self.departure, utils.dt2hstr(self.departure))
 
-        if hasattr(self, 'waiting') and self.waiting > 0:
-            popup += 'Waiting: {}<br>'.format(utils.duration_to_human_str(self.waiting))
+        if hasattr(self, 'waiting') and self.waiting:
+            popup += '⌛ {}<br>'.format(utils.td2hstr(self.waiting))
         if hasattr(self, 'opening_hours'):
-            popup += 'Opened: {}<br>'.format(self.opening_hours)
+            popup += '⏰ {}<br>'.format(self.opening_hours)
             self.popup_wide = True
 
         self.popup = popup
@@ -87,14 +90,14 @@ class Marker:
 
     def get_travel_time(self, neighbour):
         travel_time = neighbour.arrival - self.arrival
-        if hasattr(self, 'waiting'):
+        if self.waiting:
             travel_time -= self.waiting
-        if hasattr(self, 'duration'):
+        if self.duration:
             travel_time -= self.duration
-        return utils.duration_to_human_str(travel_time)
+        return utils.td2hstr(travel_time)
 
     def add_to_map(self, gmap):
-        popup_width = 260 if self.popup_wide else 180
+        popup_width = 300 if self.popup_wide else 260
         popup_html = folium.Html(self.popup, script=True)
         popup = folium.Popup(popup_html, max_width=popup_width, min_width=popup_width)
 
@@ -126,6 +129,10 @@ class Marker:
         self.departure = departure
         self.end = True
         self._form_popup()
+
+    @property
+    def arrival_day_str(self):
+        return self.arrival.weekday
 
 
 if __name__ == '__main__':

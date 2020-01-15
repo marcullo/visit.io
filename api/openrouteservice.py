@@ -40,6 +40,11 @@ def request_node(id, api_key):
 def request_route_optimization(targets, params, profile, api_key):
     endpoint = 'https://api.openrouteservice.org/optimization'
 
+    start_dt = params.from_at
+    end_dt = params.to_at
+    start_ts = int(start_dt.timestamp())
+    end_ts = int(end_dt.timestamp())
+
     jobs = []
     for i, t, in enumerate(targets):
         jobs.append({
@@ -54,7 +59,7 @@ def request_route_optimization(targets, params, profile, api_key):
         'profile': profile,
         'start': params.from_coordinates[::-1],
         'end': params.to_coordinates[::-1],
-        'time_window': [params.from_at, params.to_at]
+        'time_window': [start_ts, end_ts]
     }]
 
     payload = {
@@ -66,7 +71,8 @@ def request_route_optimization(targets, params, profile, api_key):
         'Authorization': '5b3ce3597851110001cf6248ed4ab5fb3aca4d63a68c203ddd8fc8a5'
     }
 
-    log('ors/optimization: profile: {}'.format(profile))
+    log('ors/optimization: route: within {} - {}'.format(start_dt, end_dt))
+    log('ors/optimization: route: {} ({} pois) for {} -> {}'.format(profile, len(jobs), params.from_place, params.to_place))
     log('ors/optimization: payload:', verbose=True)
     log(json.dumps(payload, indent=2), indent=0, verbose=True)
 

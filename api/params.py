@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 from logger import log
-from utils import str2ts, strhr2sec
+from utils import str2dt, strhr2sec
 
 
 class Params:
@@ -13,9 +13,9 @@ class Params:
 
         self.city = raw['city']
         self.from_place = available['from']['place']
-        self.from_at = str2ts(available['from']['at'])
+        self.from_at = str2dt(available['from']['at'])
         self.to_place = available['to']['place']
-        self.to_at = str2ts(available['to']['at'])
+        self.to_at = str2dt(available['to']['at'])
         self.pois = raw['pois']
         self.profile = raw['profile']
 
@@ -34,11 +34,11 @@ class Params:
             'available': {
                 'from': {
                     'place': self.from_place,
-                    'at': self.from_at
+                    'at': str(self.from_at)
                 },
                 'to': {
                     'place': self.to_place,
-                    'at': self.to_at
+                    'at': str(self.to_at)
                 }
             },
             'pois': self.pois,
@@ -72,5 +72,4 @@ class Params:
 if __name__ == '__main__':
     params = Params('params/example.json')
     params.set_coordinates(coord_from=[1.0, 2.0], coord_to=[3.0, 4.0])
-    params.set_relative_time_window()
     log(params, indent=0)

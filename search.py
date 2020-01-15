@@ -118,7 +118,6 @@ if __name__ == '__main__':
         log(end_point, indent=0, verbose=True)
 
         params.set_coordinates(coord_from=start_point.coordinates, coord_to=end_point.coordinates)
-        params.set_relative_time_window()
 
         targets = []
         pois_to_visualize = []
@@ -130,6 +129,7 @@ if __name__ == '__main__':
             if poi:
                 duration_of_stay = pois[poi.name] * 60  # in seconds
                 target = Target(poi, duration_of_stay)
+                target.set_opening_timestamps_in_range(start_dt=params.from_at, end_dt=params.to_at)
                 targets.append(target)
                 pois_to_visualize.append(poi)
 
@@ -142,7 +142,7 @@ if __name__ == '__main__':
         fetch.stats()
 
         optimization_content = fetch.optimization(targets, params)
-        optimization = Optimization(optimization_content, pois_ids)
+        optimization = Optimization(optimization_content, pois_ids, profile=params.profile)
         visualize(optimization, pois_to_visualize)
     except KeyboardInterrupt:
         print()
