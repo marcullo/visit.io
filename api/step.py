@@ -57,7 +57,7 @@ if __name__ == '__main__':
     ]
     pois_ids = list(map(lambda p: p.id, pois))
 
-    content_steps = json.loads(optimization_example.STEPS)
+    content_steps = json.loads(optimization_example.OPTIMIZATION)['routes'][0]['steps']
     print('step by step:')
     for content in content_steps:
         step = Step(content, pois_ids)
