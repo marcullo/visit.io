@@ -80,10 +80,12 @@ class Marker:
     def _form_tooltip(self):
         self.tooltip = self.name
 
-    def _get_connection_description(self, neighbour, id, vehicle):
+    def _get_connection_description(self, neighbour, id, vehicle, end):
         desc = ''
 
-        travel_time = self.get_travel_time(neighbour)
+        travel_dt = self.get_travel_datetime(neighbour)
+        start = end - travel_dt
+        travel_time = utils.td2hstr(travel_dt)
 
         if vehicle == 'driving-car':
             vehicle = '🚗'
@@ -97,16 +99,18 @@ class Marker:
             vehicle = 'Step {}'.format(id)
 
         desc += '{} {}<br>'.format(travel_time, vehicle)
+        desc += '↦ {}<br>'.format(start)
+        desc += '⇥ {}<br>'.format(end)
 
         return desc
 
-    def get_travel_time(self, neighbour):
+    def get_travel_datetime(self, neighbour):
         travel_time = neighbour.arrival - self.arrival
         if self.waiting:
             travel_time -= self.waiting
         if self.duration:
             travel_time -= self.duration
-        return utils.td2hstr(travel_time)
+        return travel_time
 
     def add_to_map(self, gmap):
         popup_width = 300 if self.popup_wide else 260
@@ -127,7 +131,7 @@ class Marker:
         p2 = marker.coordinates
 
         connection_id = pair_nr + 1
-        desc = self._get_connection_description(neighbour=marker, id=connection_id, vehicle=vehicle)
+        desc = self._get_connection_description(neighbour=marker, id=connection_id, vehicle=vehicle, end=marker.arrival)
         popup_html = folium.Html(desc, script=True)
         popup = folium.Popup(popup_html, max_width=popup_width, min_width=popup_width)
 

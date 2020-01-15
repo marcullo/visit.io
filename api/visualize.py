@@ -115,7 +115,7 @@ def _log_path(markers):
     for i, marker in enumerate(markers):
         index = '[{:>3}]'.format(str(i) if i > 0 and i < len(markers) - 1 else ' ↦ ' if i == 0 else ' ⇥ ')
         name = marker.name
-        travel = str(markers[i - 1].get_travel_time(marker)) if i > 0 else ''
+        travel = utils.td2hstr(markers[i - 1].get_travel_datetime(marker)) if i > 0 else ''
         arrival = str(marker.arrival) + ' ({})'.format(utils.dt2strday(marker.arrival))
         waiting = str(marker.waiting) if marker.waiting else ''
         visit = str(marker.duration) if marker.duration else ''
