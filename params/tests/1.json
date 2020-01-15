@@ -1,0 +1,25 @@
+{
+  "city": "Warszawa",
+  "available": {
+    "from": {
+      "place": "Pętla Dworzec Centralny",
+      "at": "2020-01-16 08:00:00"
+    },
+    "to": {
+      "place": "Pomnik Edwarda Mandella House'a",
+      "at": "2020-01-16 20:00:00"
+    }
+  },
+  "pois": {
+    "U Szwejka": 60,
+    "ORZO": 60,
+    "Secado": 40,
+    "Pomnik Wincentego Witosa": 20,
+    "Berło Wilanów": 30,
+    "Cmentarz Mauzoleum Żołnierzy Radzieckich": 20,
+   "Pod Grubą Kaśką Multi Pub": 10,
+   "Aceto Balsamico": 120,
+   "Pomnik Edwarda Mandella House'a": 10
+  },
+  "profile": "cycling-regular"
+}

@@ -1,0 +1,31 @@
+{
+  "city": "Warszawa",
+  "available": {
+    "from": {
+      "place": "Seu Sorriso Lunch Bar",
+      "at": "2020-01-16 08:00:00"
+    },
+    "to": {
+      "place": "Mili Moi",
+      "at": "2020-01-16 20:00:00"
+    }
+  },
+  "pois": {
+    "Vyčeska": 60,
+    "Pętla Dworzec Centralny": 20,
+    "Rosso": 25,
+    "Cmentarz Mauzoleum Żołnierzy Radzieckich": 20,
+   "Pod Grubą Kaśką Multi Pub": 25,
+   "Aceto Balsamico": 30,
+   "Pomnik Edwarda Mandella House'a": 30,
+   "Pomnik Wincentego Witosa": 120,
+   "Pomnik Hipcia": 20,
+   "Pomnik Pamięci Żołnierzy Wyklętych": 50,
+   "Iluzjon": 40,
+   "Berło Wilanów": 30,
+  "U Szwejka": 50,
+   "Teatr Akt": 70
+  },
+
+  "profile": "cycling-regular"
+}

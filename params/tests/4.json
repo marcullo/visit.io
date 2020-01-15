@@ -1,0 +1,29 @@
+{
+  "city": "Warszawa",
+  "available": {
+    "from": {
+      "place": "Teatr Akt",
+      "at": "2020-01-16 08:00:00"
+    },
+    "to": {
+      "place": "Aceto Balsamic",
+      "at": "2020-01-16 20:00:00"
+    }
+  },
+  "pois": {
+    "U Szwejka": 60,
+    "Pętla Dworzec Centralny": 20,
+    "Berło Wilanów": 130,
+    "Cmentarz Mauzoleum Żołnierzy Radzieckich": 20,
+   "Pod Grubą Kaśką Multi Pub": 30,
+   "Vyčeska": 20,
+   "Pomnik Edwarda Mandella House'a": 110,
+   "Pomnik Wincentego Witosa": 20,
+   "Pomnik Hipcia": 160,
+   "Pomnik Pamięci Żołnierzy Wyklętych": 50,
+   "Iluzjon": 40,
+   "Seu Sorriso Lunch Bar": 50,
+   "Rosso": 70
+     },
+  "profile": "driving-car"
+}

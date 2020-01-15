@@ -1,0 +1,30 @@
+{
+  "city": "Warszawa",
+  "available": {
+    "from": {
+      "place": "Rosso",
+      "at": "2020-01-16 08:00:00"
+    },
+    "to": {
+      "place": "Vyčeska",
+      "at": "2020-01-16 20:00:00"
+    }
+  },
+  "pois": {
+    "U Szwejka": 60,
+    "Pętla Dworzec Centralny": 20,
+    "Berło Wilanów": 25,
+    "Cmentarz Mauzoleum Żołnierzy Radzieckich": 20,
+   "Pod Grubą Kaśką Multi Pub": 10,
+   "Aceto Balsamico": 20,
+   "Pomnik Edwarda Mandella House'a": 30,
+   "Pomnik Wincentego Witosa": 20,
+   "Pomnik Hipcia": 20,
+   "Pomnik Pamięci Żołnierzy Wyklętych": 50,
+   "Iluzjon": 40,
+   "Seu Sorriso Lunch Bar": 50,
+   "Teatr Akt": 70
+  },
+
+  "profile": "driving-car"
+}

@@ -1,0 +1,31 @@
+{
+  "city": "Warszawa",
+  "available": {
+    "from": {
+      "place": "Pod Grubą Kaśką Multi Pub",
+      "at": "2020-01-16 11:00:00"
+    },
+    "to": {
+      "place": "Pomnik Hipcia",
+      "at": "2020-01-16 20:00:00"
+    }
+  },
+  "pois": {
+    "Vyčeska": 60,
+    "Pętla Dworzec Centralny": 20,
+    "Rosso": 25,
+    "Cmentarz Mauzoleum Żołnierzy Radzieckich": 20,
+   "Seu Sorriso Lunch Bar": 25,
+   "Aceto Balsamico": 30,
+   "Pomnik Edwarda Mandella House'a": 30,
+   "Pomnik Wincentego Witosa": 20,
+   "Mili Moi": 50,
+   "Pomnik Pamięci Żołnierzy Wyklętych": 50,
+   "Iluzjon": 40,
+   "Berło Wilanów": 30,
+  "U Szwejka": 50,
+   "Teatr Akt": 170
+  },
+
+  "profile": "driving-car"
+}
