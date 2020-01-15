@@ -49,7 +49,7 @@ class Marker:
         if hasattr(self, 'duration'):
             content['duration of stay'] = self.duration
 
-        return json.dumps(content, indent=2)
+        return json.dumps(content, indent=2, ensure_ascii=False)
 
     def _form_popup(self):
         popup = ''
