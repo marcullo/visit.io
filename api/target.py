@@ -30,7 +30,7 @@ class Target:
                 if self.amenity in self.DEFAULT_OPENING_HOURS:
                     opening_hours = self.DEFAULT_OPENING_HOURS[self.amenity]
 
-            log('Warning: Poi {} does not have opening hours. Assuming {}!'.format(poi.name, opening_hours))
+            log('Warning: {} does not have opening hours. Assuming {}!'.format(poi.name, opening_hours))
             self.opening_hours = opening_hours
             self.opening_timestamps = [list(tsr) for tsr in ophrs2tsa(self.opening_hours)]
 
