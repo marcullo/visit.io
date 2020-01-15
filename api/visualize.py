@@ -62,13 +62,13 @@ def _attach_markers(markers, gmap):
         end.add_to_map(gmap)
 
 
-def _connect_markers(markers, gmap):
+def _connect_markers(markers, gmap, vehicle):
     pairs_nr = len(markers) - 1
 
     for i in range(pairs_nr):
         m1 = markers[i]
         m2 = markers[i + 1]
-        m1.connect(m2, gmap, pair_nr=i)
+        m1.connect(m2, gmap, pair_nr=i, vehicle=vehicle)
 
 
 def _save_map(gmap, filename):
@@ -147,7 +147,7 @@ def visualize(optimization, pois):
     _log_path(markers)
 
     _attach_markers(markers, gmap)
-    _connect_markers(markers, gmap)
+    _connect_markers(markers, gmap, vehicle=optimization.profile)
     _save_map(gmap, output_filename)
     _run_map(output_filename)
 

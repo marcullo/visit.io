@@ -80,11 +80,23 @@ class Marker:
     def _form_tooltip(self):
         self.tooltip = self.name
 
-    def _get_connection_description(self, neighbour, id):
+    def _get_connection_description(self, neighbour, id, vehicle):
         desc = ''
 
         travel_time = self.get_travel_time(neighbour)
-        desc += '<b>Step {}</b>: {}<br>'.format(id, travel_time)
+
+        if vehicle == 'driving-car':
+            vehicle = '🚗'
+        elif vehicle == 'foot-walking':
+            vehicle = '🚶'
+        elif vehicle == 'cycling-regular':
+            vehicle = '🚲'
+        elif vehicle == 'cycling-road':
+            vehicle = '🚲'
+        else:
+            vehicle = 'Step {}'.format(id)
+
+        desc += '{} {}<br>'.format(travel_time, vehicle)
 
         return desc
 
@@ -106,7 +118,7 @@ class Marker:
         else:
             folium.Marker(self.coordinates, popup=popup, tooltip=self.tooltip).add_to(gmap)
 
-    def connect(self, marker, gmap, pair_nr=None):
+    def connect(self, marker, gmap, pair_nr=None, vehicle='driving-car'):
         if self.id == marker.id:
             return
 
@@ -115,7 +127,7 @@ class Marker:
         p2 = marker.coordinates
 
         connection_id = pair_nr + 1
-        desc = self._get_connection_description(neighbour=marker, id=connection_id)
+        desc = self._get_connection_description(neighbour=marker, id=connection_id, vehicle=vehicle)
         popup_html = folium.Html(desc, script=True)
         popup = folium.Popup(popup_html, max_width=popup_width, min_width=popup_width)
 
