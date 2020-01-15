@@ -28,6 +28,7 @@ class Optimization:
         self.visit_time = i2dt(route['service'])
         self.travel_time = i2dt(route['duration'])
         self.waiting_time = i2dt(route['waiting_time'])
+        self._computing_times = content['summary']['computing_times']
 
         raw_steps = route['steps']
         self.steps = []
@@ -45,7 +46,8 @@ class Optimization:
                 'travel': str(self.travel_time),
                 'waiting': str(self.waiting_time) if self.waiting_time else None
             },
-            'steps': [s.dict() for s in self.steps]
+            'steps': [s.dict() for s in self.steps],
+            'computing times [ms]': self._computing_times
         }, indent=2)
 
     @property
@@ -60,6 +62,10 @@ class Optimization:
             stats.append('{} waiting'.format(self.waiting_time))
 
         return str(stats)[1:-1].replace("'", '')
+
+    @property
+    def computing_times(self):
+        return 'loaded in {} ms, solved in {} ms'.format(self._computing_times['loading'], self._computing_times['solving'])
 
 
 if __name__ == '__main__':

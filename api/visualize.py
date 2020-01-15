@@ -140,6 +140,7 @@ def _log_path(markers):
 
 def visualize(optimization, pois):
     output_filename = 'optimization.html'
+    log('optimization: {}'.format(optimization.computing_times))
     markers = _create_markers(steps=optimization.steps, pois=pois)
     gmap = _create_map(markers)
     _log_stats(optimization)
